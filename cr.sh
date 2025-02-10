@@ -164,7 +164,7 @@ build_and_push() {
   ls -lah
   helm-repo-html build -i $input -t $template -o $output
 
-  git add .
+  git add index.html
   git commit -m 'core(hr): generated the home page'
   git push
 }
