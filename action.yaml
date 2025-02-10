@@ -36,12 +36,12 @@ runs:
 
         args=(--owner "$owner" --repo "$repo")
 
-        if [[ -n "${{ inputs.output_file }}" ]]; then
-            args+=(--input "${{ inputs.output_file }}")
+        if [[ -n "${{ inputs.input_file }}" ]]; then
+            args+=(--input "${{ inputs.input_file }}")
         fi
 
-        if [[ -n "${{ inputs.input_file }}" ]]; then
-            args+=(--output ${{ inputs.input_file }})
+        if [[ -n "${{ inputs.output_file }}" ]]; then
+            args+=(--output ${{ inputs.output_file }})
         fi
 
         if [[ -n "${{ inputs.template }}" ]]; then
