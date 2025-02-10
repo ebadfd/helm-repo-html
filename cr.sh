@@ -133,14 +133,8 @@ parse_command_line() {
   fi
 
   
-  install_helm_repo_html()
-
-  ls -lah
-  helm-repo-html build -i $input -t $template -o $output
-
-  git add .
-  git commit -m 'core(hr): generated the home page'
-  git push
+  install_helm_repo_html
+  build_and_push
 }
 
 install_helm_repo_html() {
@@ -162,5 +156,14 @@ install_helm_repo_html() {
   export PATH="$install_dir:$PATH"
 }
 
+build_and_push() {
+  ls -lah
+  helm-repo-html build -i $input -t $template -o $output
+
+  git add .
+  git commit -m 'core(hr): generated the home page'
+  git push
+}
 
 main "$@"
+
