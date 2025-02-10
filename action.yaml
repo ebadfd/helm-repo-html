@@ -6,15 +6,21 @@ branding:
   icon: anchor
 inputs:
   version:
-    description: "The heml-repo-html version to use (default: v1.0.0)"
+    description: "The heml-repo-html version to use (default: v0.0.1-hr-beta)"
     required: false
-    default: v1.0.0
-  config:
-    description: "The relative path to the heml-repo-html config file"
+    default: v0.0.1-hr-beta
+  input_file:
+    description: "The helm build artifact (default: index.yaml)"
     required: false
-  build_only:
-    description: "Skip pushing and only build the chart.yaml"
+    default: index.yaml
+  output_file:
+    description: "Build html output file (default: index.html)"
     required: false
+    default: index.html
+  template:
+    description: "Custom template file"
+    required: false
+    default: gh-pages
   pages_branch:
     description: "Name of the branch to be used to push the index and artifacts. (default to: gh-pages)"
     required: false
@@ -30,14 +36,21 @@ runs:
 
         args=(--owner "$owner" --repo "$repo")
 
-        if [[ -n "${{ inputs.config }}" ]]; then
-            args+=(--config "${{ inputs.config }}")
+        if [[ -n "${{ inputs.output_file }}" ]]; then
+            args+=(--input "${{ inputs.output_file }}")
         fi
 
-        if [[ -n "${{ inputs.build_only }}" ]]; then
-            args+=(--build-only "true")
+        if [[ -n "${{ inputs.input_file }}" ]]; then
+            args+=(--output ${{ inputs.input_file }})
+        fi
+
+        if [[ -n "${{ inputs.template }}" ]]; then
+            args+=(--template ${{ inputs.template }})
+        fi
+
+        if [[ -n "${{ inputs.pages_branch }}" ]]; then
+            args+=(--branch ${{ inputs.pages_branch }})
         fi
         
-        fi
-
+        "$GITHUB_ACTION_PATH/cr.sh" "${args[@]}"
       shell: bash
