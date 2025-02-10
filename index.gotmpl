@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Helm Charts</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hack/0.8.1/hack.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hack/0.8.1/dark-grey.css">
+	<link rel="stylesheet" href="https://ebadfd.tech/static/css/styles.css">
+	<style>
+		pre {
+			padding: 20px !important;
+		}
+	</style>
+</head>
+
+<body class="hack dark-grey">
+	<div class="container">
+		<section class="markdown-body">
+			<h1>Helm Charts</h1>
+
+			<h2>Usage</h2>
+			<pre lang="bash"><code>helm repo add ebadfd https://helm.ebadfd.tech</code></pre>
+
+			<p> These are some Helm charts I've created for my homelab. Anyone is free to use them and suggest
+				improvements. I actively maintain most of these charts as I use them in my setup. However, charts marked
+				as deprecated are no longer maintained and are not recommended for production use. </p>
+
+			<p> If you want to see examples of how these charts are configured, check out my infrastructure repository.
+				It contains most of the setup for my homelab cluster
+				<a href="https://github.com/ebadfd/k3s-infra">https://github.com/ebadfd/k3s-infra</a>
+			</p>
+
+			<h2>Charts</h2>
+
+			<div class="items">
+				{{range $key, $chartEntry := .Entries }}
+				<div class="card" style="margin: 2px">
+					<div class="media" style="padding: 10px">
+						<div class="media-left">
+							<div class="avatarholder"><img src="{{ (index $chartEntry 0).Icon }}"
+									style="width: 100%;height: 100%;object-fit: fill;">
+							</div>
+						</div>
+						<div class="media-body">
+							<div class="media-heading">{{ (index $chartEntry 0).Name }}
+							</div>
+							<div class="media-content">{{ (index $chartEntry 0).Description }}
+								(<a href="{{ (index (index $chartEntry 0).Urls 0) }}"
+									title="{{ (index (index $chartEntry 0).Urls 0) }}">
+									{{ (index $chartEntry 0).Version }}
+									@
+									{{ (index $chartEntry 0).AppVersion }}
+								</a>)
+							</div>
+							<div class="btn-group" style="margin-top: 10px;">
+								{{range $key, $keyword := (index $chartEntry 0).Keywords }}
+									<button class="btn btn-ghost btn-info"
+										style="padding: .30rem 1rem !important;"> {{ $keyword }}</button>
+								{{end}}
+							</div>
+						</div>
+					</div>
+				</div>
+				{{end}}
+			</div>
+		</section>
+
+		<div style="margin-top: 20px;"> Last updated on:
+			<time datetime="{{ .Generated.Format " 2006-01-02T15:04:05" }}" pubdate id="generated">{{ .Generated.Format
+				"Mon Jan 2 2006 03:04:05PM MST-07:00" }}</time>
+		</div>
+	</div>
+
+</body>
+
+</html>

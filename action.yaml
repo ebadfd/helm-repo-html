@@ -1,17 +1,43 @@
-name: Helm html page generation
-run-name: Generate html page for the helm repo
+name: "Helm Chart Ui Builder"
+description: "Host a Helm charts repo on GitHub Pages"
+author: "dasith <dasith@ebadfd.tech>"
+branding:
+  color: blue
+  icon: anchor
+inputs:
+  version:
+    description: "The heml-repo-html version to use (default: v1.0.0)"
+    required: false
+    default: v1.0.0
+  config:
+    description: "The relative path to the heml-repo-html config file"
+    required: false
+  build_only:
+    description: "Skip pushing and only build the chart.yaml"
+    required: false
+  pages_branch:
+    description: "Name of the branch to be used to push the index and artifacts. (default to: gh-pages)"
+    required: false
+    default: gh-pages
 
-on:
-  push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
+runs:
+  using: composite
+  steps:
+    - id: release
+      run: |
+        owner=$(cut -d '/' -f 1 <<< "$GITHUB_REPOSITORY")
+        repo=$(cut -d '/' -f 2 <<< "$GITHUB_REPOSITORY")
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+        args=(--owner "$owner" --repo "$repo")
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run a one-line script
-        run: echo Hello from Octo Organization
+        if [[ -n "${{ inputs.config }}" ]]; then
+            args+=(--config "${{ inputs.config }}")
+        fi
+
+        if [[ -n "${{ inputs.build_only }}" ]]; then
+            args+=(--build-only "true")
+        fi
+        
+        fi
+
+      shell: bash
