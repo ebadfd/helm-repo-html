@@ -157,7 +157,9 @@ install_helm_repo_html() {
 }
 
 build_and_push() {
+  echo "switching to the $pages_branch branch"  
   git checkout $pages_branch
+  git pull
 
   ls -lah
   helm-repo-html build -i $input -t $template -o $output
