@@ -30,10 +30,6 @@ main() {
   local pages_branch=
   local use_arm=false
 
-  parse_command_line "$@"
-
-  : "${CR_TOKEN:?Environment variable CR_TOKEN must be set}"
-
   local repo_root
   repo_root=$(git rev-parse --show-toplevel)
   pushd "$repo_root" >/dev/null
